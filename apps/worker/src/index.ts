@@ -1,14 +1,17 @@
 import { logger } from "./logger";
+import { startCrawlWorker } from "./jobs/crawl-job";
 
 async function main() {
   logger.info("[worker] boot");
-  // Phase 05/06 will register crawl + publish queues here.
-  // Keep process alive.
-  process.on("SIGINT", () => process.exit(0));
-  process.on("SIGTERM", () => process.exit(0));
-  setInterval(() => {
-    /* heartbeat — will be replaced by BullMQ workers in later phases */
-  }, 60_000);
+  const crawl = startCrawlWorker();
+  process.on("SIGINT", async () => {
+    await crawl.close();
+    process.exit(0);
+  });
+  process.on("SIGTERM", async () => {
+    await crawl.close();
+    process.exit(0);
+  });
 }
 
 main().catch((err) => {

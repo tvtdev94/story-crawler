@@ -150,6 +150,9 @@ importers:
 
   apps/worker:
     dependencies:
+      '@prisma/client':
+        specifier: ^6.1.0
+        version: 6.19.3(prisma@6.19.3(typescript@5.9.3))(typescript@5.9.3)
       '@story-crawler/core':
         specifier: workspace:*
         version: link:../../packages/core

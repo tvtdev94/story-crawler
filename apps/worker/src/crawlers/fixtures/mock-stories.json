@@ -1,0 +1,72 @@
+{
+  "stories": [
+    {
+      "externalId": "mock-001",
+      "title": "Hành trình về phương đông",
+      "authorName": "Nguyễn Mock",
+      "description": "Câu chuyện giả lập về một chuyến đi xuyên Việt.",
+      "coverUrl": null,
+      "sourceUrl": "https://example.local/mock/001",
+      "genres": ["Phiêu lưu", "Đô thị"]
+    },
+    {
+      "externalId": "mock-002",
+      "title": "Tiếng vọng từ rừng già",
+      "authorName": "Trần Mock",
+      "description": "Một bí ẩn trong rừng nhiệt đới.",
+      "sourceUrl": "https://example.local/mock/002",
+      "genres": ["Thiếu nhi"]
+    },
+    {
+      "externalId": "mock-003",
+      "title": "Bóng tối thành phố",
+      "authorName": "Lê Mock",
+      "description": "Truyện trinh thám hiện đại.",
+      "sourceUrl": "https://example.local/mock/003",
+      "genres": ["Đô thị"]
+    },
+    {
+      "externalId": "mock-004",
+      "title": "Đường về cố hương",
+      "authorName": "Phạm Mock",
+      "description": "Hồi ức quê hương qua góc nhìn người trở về.",
+      "sourceUrl": "https://example.local/mock/004",
+      "genres": ["Cổ điển"]
+    },
+    {
+      "externalId": "mock-005",
+      "title": "Tia sáng cuối đường hầm",
+      "authorName": "Hoàng Mock",
+      "description": "Hành trình vượt khó của một nhà nghiên cứu.",
+      "sourceUrl": "https://example.local/mock/005",
+      "genres": ["Khoa học viễn tưởng"]
+    }
+  ],
+  "chaptersByStory": {
+    "mock-001": [
+      { "number": 1, "title": "Chuyến tàu khởi hành", "content": "Sương mai phủ kín sân ga. Tôi bước lên chuyến tàu đầu tiên trong đời, tim đập mạnh như chưa từng được nghỉ. Thành phố lùi lại phía sau như một lời chào dài bất tận." },
+      { "number": 2, "title": "Bến đầu tiên", "content": "Bến tàu nhỏ nằm cạnh con sông đỏ phù sa. Tiếng còi tàu vang lên giòn giã, gọi tôi xuống như gọi một đứa con xa nhà lâu ngày." },
+      { "number": 3, "title": "Người bạn đồng hành", "content": "Trên chuyến xe khách cũ, tôi gặp một người lạ mặt mỉm cười rất hiền. Anh kể chuyện đời mình bằng chất giọng miền Trung dày dặn sương gió." }
+    ],
+    "mock-002": [
+      { "number": 1, "title": "Lối mòn ẩm ướt", "content": "Rừng già không bao giờ ngủ. Tiếng côn trùng rì rào suốt đêm như một bản nhạc không lời. Mỗi bước chân ta đặt xuống đều khẽ chạm vào lịch sử của lá mục." },
+      { "number": 2, "title": "Tiếng gọi", "content": "Một âm thanh kéo dài vọng từ phía bên kia con suối. Không phải gió. Không phải thú. Tim tôi đập theo nhịp tiếng vọng ấy." },
+      { "number": 3, "title": "Bí ẩn nguồn nước", "content": "Suối trong đến mức tôi nhìn thấy đáy. Nhưng đáy ấy là một mặt phẳng kim loại mờ ánh, lạnh lẽo, không thuộc về rừng." }
+    ],
+    "mock-003": [
+      { "number": 1, "title": "Đêm không sao", "content": "Đèn đường tắt sớm hơn bình thường. Cô đi bộ về nhà với một cảm giác bất an mơ hồ, dù phố vẫn im lìm như mọi khi." },
+      { "number": 2, "title": "Lá thư không người gửi", "content": "Phong bì trắng nằm dưới khe cửa. Không tên người gửi. Chỉ một dòng: ‘Đừng bật đèn lúc 9h.’" },
+      { "number": 3, "title": "Cánh cửa khép hờ", "content": "Đêm hôm sau, cô về đến nhà thì thấy cánh cửa chỉ khép hờ. Bên trong, mọi thứ đều đúng vị trí, trừ một thứ duy nhất." }
+    ],
+    "mock-004": [
+      { "number": 1, "title": "Đường làng cũ", "content": "Hai mươi năm sau, con đường làng vẫn ngoằn ngoèo qua những thửa ruộng. Chỉ có cây gạo già là biến mất, để lại một khoảng trống trên trời." },
+      { "number": 2, "title": "Mâm cơm chiều", "content": "Mẹ vẫn nấu canh cá rau ngót như thuở nhỏ. Vị ngọt thanh ấy không thể tìm thấy ở thành phố — bất kể có bao nhiêu đầu bếp giỏi." },
+      { "number": 3, "title": "Tiếng cười thuở ấy", "content": "Đám trẻ trong xóm chạy ngang qua sân, cười khúc khích. Tôi nhận ra tiếng cười ấy quen lắm — như chính mình ba mươi năm trước." }
+    ],
+    "mock-005": [
+      { "number": 1, "title": "Phòng thí nghiệm bụi", "content": "Phòng thí nghiệm bị bỏ hoang ba năm. Bụi phủ trắng các thiết bị. Nhưng dữ liệu vẫn ở đó, lưu trữ trong ổ cứng đã khô mực." },
+      { "number": 2, "title": "Tia chớp đầu tiên", "content": "Khi máy gia tốc khởi động lại, một tia chớp xanh xé toạc bóng tối. Đồng hồ đếm ngược bắt đầu chạy ngược về phía trước." },
+      { "number": 3, "title": "Hành lang sáng", "content": "Cuối hành lang là một cánh cửa không có tay nắm. Phía sau cánh cửa, câu trả lời cho cả thập kỷ chờ đợi đang nằm im lặng." }
+    ]
+  }
+}
