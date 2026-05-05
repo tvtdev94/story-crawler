@@ -1,4 +1,4 @@
-import { LicenseMode, LicenseStatus } from "./types.js";
+import { LicenseMode, LicenseStatus } from "./types";
 
 export type LicensedChapterPayload = {
   content: string | null;

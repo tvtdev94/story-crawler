@@ -6,7 +6,7 @@ const nextConfig = {
       bodySizeLimit: "2mb",
     },
   },
-  transpilePackages: ["@tram-tuyen/core", "@tram-tuyen/db"],
+  transpilePackages: ["@story-crawler/core", "@story-crawler/db"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**" },

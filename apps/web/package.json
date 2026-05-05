@@ -1,12 +1,12 @@
 {
-  "name": "@tram-tuyen/web",
+  "name": "@story-crawler/web",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 3000",
-    "start": "next start -p 3000",
-    "build": "next build",
+    "dev": "dotenv -e ../../.env -- next dev -p 3000",
+    "start": "dotenv -e ../../.env -- next start -p 3000",
+    "build": "dotenv -e ../../.env -- next build",
     "lint": "next lint --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"
@@ -24,8 +24,8 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.2",
     "@tanstack/react-table": "^8.20.5",
-    "@tram-tuyen/core": "workspace:*",
-    "@tram-tuyen/db": "workspace:*",
+    "@story-crawler/core": "workspace:*",
+    "@story-crawler/db": "workspace:*",
     "bcryptjs": "^2.4.3",
     "bullmq": "^5.34.10",
     "class-variance-authority": "^0.7.1",
@@ -46,6 +46,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.10.0",
+    "dotenv-cli": "^8.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "autoprefixer": "^10.4.20",

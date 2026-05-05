@@ -1,9 +1,9 @@
-name: tram-tuyen
+name: story-crawler
 
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: tram-tuyen-postgres
+    container_name: story-crawler-postgres
     restart: unless-stopped
     environment:
       POSTGRES_USER: tramtuyen
@@ -12,7 +12,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - tram-tuyen-postgres:/var/lib/postgresql/data
+      - story-crawler-postgres:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U tramtuyen -d tramtuyen"]
       interval: 5s
@@ -21,13 +21,13 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: tram-tuyen-redis
+    container_name: story-crawler-redis
     restart: unless-stopped
     command: ["redis-server", "--appendonly", "yes"]
     ports:
       - "6379:6379"
     volumes:
-      - tram-tuyen-redis:/data
+      - story-crawler-redis:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -35,5 +35,5 @@ services:
       retries: 10
 
 volumes:
-  tram-tuyen-postgres:
-  tram-tuyen-redis:
+  story-crawler-postgres:
+  story-crawler-redis:

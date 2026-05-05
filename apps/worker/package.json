@@ -1,19 +1,19 @@
 {
-  "name": "@tram-tuyen/worker",
+  "name": "@story-crawler/worker",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "start": "tsx src/index.ts",
+    "dev": "dotenv -e ../../.env -- tsx watch src/index.ts",
+    "start": "dotenv -e ../../.env -- tsx src/index.ts",
     "build": "tsc --noEmit",
     "lint": "echo \"(worker) lint placeholder\"",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@tram-tuyen/core": "workspace:*",
-    "@tram-tuyen/db": "workspace:*",
+    "@story-crawler/core": "workspace:*",
+    "@story-crawler/db": "workspace:*",
     "bullmq": "^5.34.10",
     "ioredis": "^5.4.2",
     "pino": "^9.5.0",
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
+    "dotenv-cli": "^8.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"

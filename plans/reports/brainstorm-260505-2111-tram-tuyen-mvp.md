@@ -5,9 +5,9 @@ slug: tram-tuyen-mvp
 status: approved
 ---
 
-# Brainstorm Report — Trạm Tuyện MVP
+# Brainstorm Report — Trạm Truyện MVP
 
-**Tagline:** "Trạm Tuyện — nơi mỗi câu chuyện dừng chân."
+**Tagline:** "Trạm Truyện — nơi mỗi câu chuyện dừng chân."
 
 ## 1. Problem Statement
 

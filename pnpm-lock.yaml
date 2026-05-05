@@ -53,15 +53,15 @@ importers:
       '@radix-ui/react-toast':
         specifier: ^1.2.2
         version: 1.2.15(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@story-crawler/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@story-crawler/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@tanstack/react-table':
         specifier: ^8.20.5
         version: 8.21.3(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
-      '@tram-tuyen/core':
-        specifier: workspace:*
-        version: link:../../packages/core
-      '@tram-tuyen/db':
-        specifier: workspace:*
-        version: link:../../packages/db
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -126,6 +126,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.5.0(postcss@8.5.14)
+      dotenv-cli:
+        specifier: ^8.0.0
+        version: 8.0.0
       eslint:
         specifier: ^9.17.0
         version: 9.39.4(jiti@1.21.7)
@@ -147,10 +150,10 @@ importers:
 
   apps/worker:
     dependencies:
-      '@tram-tuyen/core':
+      '@story-crawler/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@tram-tuyen/db':
+      '@story-crawler/db':
         specifier: workspace:*
         version: link:../../packages/db
       bullmq:
@@ -169,6 +172,9 @@ importers:
       '@types/node':
         specifier: ^22.10.0
         version: 22.19.17
+      dotenv-cli:
+        specifier: ^8.0.0
+        version: 8.0.0
       tsx:
         specifier: ^4.19.2
         version: 4.21.0
@@ -193,7 +199,7 @@ importers:
       '@prisma/client':
         specifier: ^6.1.0
         version: 6.19.3(prisma@6.19.3(typescript@5.9.3))(typescript@5.9.3)
-      '@tram-tuyen/core':
+      '@story-crawler/core':
         specifier: workspace:*
         version: link:../core
       bcryptjs:

@@ -1,4 +1,4 @@
-import { logger } from "./logger.js";
+import { logger } from "./logger";
 
 async function main() {
   logger.info("[worker] boot");

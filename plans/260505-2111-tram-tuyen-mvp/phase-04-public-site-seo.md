@@ -61,7 +61,7 @@ apps/web/components/public/
 ## Implementation Steps
 1. Trigger `ui-ux-pro-max` skill để chốt: color tokens (warm off-white `#FAF8F3`, ink `#1F1B16`, accent `#A0522D`), font pairing (Lora serif body + Inter sans heading), spacing, dark mode tokens.
 2. Public shell layout: top thin nav (logo + search icon + theme toggle + menu), footer minimal.
-3. **Home**: hero "Trạm Tuyện — nơi mỗi câu chuyện dừng chân" + grid 8 truyện mới cập nhật + list 10 chương mới.
+3. **Home**: hero "Trạm Truyện — nơi mỗi câu chuyện dừng chân" + grid 8 truyện mới cập nhật + list 10 chương mới.
 4. **Story list `/truyen`**: filter genre (multi), filter storyStatus, search title, sort (latest/popular—popular phase 2). Page-based pagination.
 5. **Story detail `/truyen/[slug]`**: cover, title, author link, description, genres badges, status badge, license badge if non-PUBLIC, chapter list (newest first, paginated).
 6. **Reader `/truyen/[slug]/chuong-[n]-[chapterSlug]`**:

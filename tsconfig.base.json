@@ -16,10 +16,10 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@tram-tuyen/db": ["./packages/db/src/index.ts"],
-      "@tram-tuyen/db/*": ["./packages/db/src/*"],
-      "@tram-tuyen/core": ["./packages/core/src/index.ts"],
-      "@tram-tuyen/core/*": ["./packages/core/src/*"]
+      "@story-crawler/db": ["./packages/db/src/index.ts"],
+      "@story-crawler/db/*": ["./packages/db/src/*"],
+      "@story-crawler/core": ["./packages/core/src/index.ts"],
+      "@story-crawler/core/*": ["./packages/core/src/*"]
     }
   }
 }

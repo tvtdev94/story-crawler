@@ -1,5 +1,5 @@
 {
-  "name": "@tram-tuyen/core",
+  "name": "@story-crawler/core",
   "version": "0.1.0",
   "private": true,
   "type": "module",

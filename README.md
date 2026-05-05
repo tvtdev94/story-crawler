@@ -1,6 +1,6 @@
-# Trạm Tuyện
+# Trạm Truyện
 
-> "Trạm Tuyện — nơi mỗi câu chuyện dừng chân."
+> "Trạm Truyện — nơi mỗi câu chuyện dừng chân."
 
 MVP đọc truyện: public site mobile-first + admin CMS + crawler hợp pháp + workflow duyệt/hẹn giờ.
 
@@ -34,4 +34,4 @@ docker           compose, Dockerfiles
 
 ## Status
 
-MVP — implementation in progress. Plan: `plans/260505-2111-tram-tuyen-mvp/`.
+MVP — implementation in progress. Plan: `plans/260505-2111-story-crawler-mvp/`.

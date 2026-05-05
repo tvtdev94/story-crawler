@@ -14,12 +14,12 @@ RUN pnpm install --frozen-lockfile=false
 
 FROM deps AS build
 COPY . .
-RUN pnpm --filter @tram-tuyen/db generate
-RUN pnpm --filter @tram-tuyen/worker build
+RUN pnpm --filter @story-crawler/db generate
+RUN pnpm --filter @story-crawler/worker build
 
 FROM node:${NODE_VERSION} AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 RUN corepack enable && corepack prepare pnpm@10.26.0 --activate
 COPY --from=build /app /app
-CMD ["pnpm", "--filter", "@tram-tuyen/worker", "start"]
+CMD ["pnpm", "--filter", "@story-crawler/worker", "start"]

@@ -1,5 +1,5 @@
 {
-  "name": "@tram-tuyen/db",
+  "name": "@story-crawler/db",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.1.0",
-    "@tram-tuyen/core": "workspace:*",
+    "@story-crawler/core": "workspace:*",
     "bcryptjs": "^2.4.3"
   },
   "devDependencies": {

@@ -8,9 +8,9 @@ blockedBy: []
 blocks: []
 ---
 
-# Plan — Trạm Tuyện MVP
+# Plan — Trạm Truyện MVP
 
-> "Trạm Tuyện — nơi mỗi câu chuyện dừng chân."
+> "Trạm Truyện — nơi mỗi câu chuyện dừng chân."
 
 MVP đọc truyện: public site mobile-first + admin CMS + crawler hợp pháp (FULL/METADATA_ONLY/MOCK) + workflow duyệt/hẹn giờ + log crawl/publish. Greenfield. Stack: Next.js 15 + Prisma + Postgres + BullMQ + Redis. Self-host Docker Compose.
 

@@ -3,8 +3,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Trạm Tuyện — nơi mỗi câu chuyện dừng chân",
-    template: "%s · Trạm Tuyện",
+    default: "Trạm Truyện — nơi mỗi câu chuyện dừng chân",
+    template: "%s · Trạm Truyện",
   },
   description: "MVP đọc truyện mobile-first, nhẹ, tập trung vào trải nghiệm đọc.",
 };
