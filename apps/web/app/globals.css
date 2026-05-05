@@ -2,36 +2,102 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: light;
-  --bg: #faf8f3;
-  --fg: #1f1b16;
-  --muted: #6b6359;
-  --accent: #a0522d;
-  --border: #e5ded1;
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  .dark {
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: theme("colors.paper.DEFAULT");
+    color: theme("colors.ink.DEFAULT");
+    font-feature-settings: "ss01", "ss02", "kern";
+  }
+
+  .dark body {
+    background: theme("colors.paper.dark");
+    color: theme("colors.ink.dark");
+  }
+
+  /* Reader typography refinements */
+  .prose-reader p {
+    margin-block: 1.4em;
+    text-indent: 0;
+  }
+  .prose-reader p + p {
+    text-indent: 1.6em;
+  }
+  .prose-reader p:first-of-type::first-letter {
+    float: left;
+    font-family: theme("fontFamily.serif");
+    font-weight: 600;
+    font-size: 4.25em;
+    line-height: 0.85;
+    padding-right: 0.12em;
+    padding-top: 0.05em;
+    color: theme("colors.accent.DEFAULT");
+  }
+
+  /* Selection */
+  ::selection {
+    background: theme("colors.accent.glow");
+    color: theme("colors.ink.DEFAULT");
+  }
+  .dark ::selection {
+    background: theme("colors.accent.deep");
+    color: theme("colors.ink.dark");
+  }
+
+  /* Focus ring uniform */
+  :focus-visible {
+    outline: 2px solid theme("colors.accent.DEFAULT");
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
 }
 
-.dark {
-  color-scheme: dark;
-  --bg: #15120e;
-  --fg: #e9e2d6;
-  --muted: #a39788;
-  --accent: #d9a87a;
-  --border: #2a241d;
-}
+@layer utilities {
+  .smallcaps {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .hairline-b {
+    border-bottom: 1px solid theme("colors.rule.DEFAULT");
+  }
+  .dark .hairline-b {
+    border-bottom-color: theme("colors.rule.dark");
+  }
+  .hairline-t {
+    border-top: 1px solid theme("colors.rule.DEFAULT");
+  }
+  .dark .hairline-t {
+    border-top-color: theme("colors.rule.dark");
+  }
 
-html,
-body {
-  background: var(--bg);
-  color: var(--fg);
-}
-
-body {
-  font-family: "Inter", system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-
-.font-reader {
-  font-family: "Lora", "Source Serif Pro", Georgia, serif;
-  line-height: 1.75;
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }

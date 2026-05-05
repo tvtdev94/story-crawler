@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { SunIcon, MoonIcon } from "./icons";
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const stored = window.localStorage.getItem("theme");
@@ -14,6 +16,7 @@ export function ThemeToggle() {
         : "light";
     setTheme(initial);
     document.documentElement.classList.toggle("dark", initial === "dark");
+    setMounted(true);
   }, []);
 
   function toggle() {
@@ -27,10 +30,10 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="rounded border border-border px-2 py-1 text-xs hover:bg-paper-dark/5"
-      aria-label="Đổi giao diện sáng/tối"
+      aria-label={theme === "dark" ? "Bật chế độ sáng" : "Bật chế độ tối"}
+      className="inline-flex h-9 w-9 items-center justify-center rounded-full text-ink-dim transition-colors duration-200 hover:bg-paper-deep hover:text-accent dark:text-ink-dark-dim dark:hover:bg-paper-dark-elev dark:hover:text-accent-soft"
     >
-      {theme === "dark" ? "☀️ Sáng" : "🌙 Tối"}
+      {mounted && (theme === "dark" ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />)}
     </button>
   );
 }

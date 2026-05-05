@@ -2,6 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getChapter, getAdjacentChapters } from "@/lib/public/queries";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  BookIcon,
+} from "@/components/public/icons";
 
 export const revalidate = 60;
 
@@ -46,7 +51,6 @@ export default async function ReaderPage({
   if (!chapter) notFound();
 
   const { prev, next } = await getAdjacentChapters(chapter.story.id, n);
-
   const isMetaOnly = chapter.story.licenseStatus === "METADATA_ONLY";
 
   const jsonLd = {
@@ -59,69 +63,108 @@ export default async function ReaderPage({
   };
 
   return (
-    <main className="mx-auto max-w-reader px-4 py-8">
+    <article className="mx-auto max-w-reader px-5 pb-24 pt-10 md:pt-16">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <nav className="mb-4 text-xs text-ink-muted">
-        <Link href={`/truyen/${chapter.story.slug}`} className="hover:text-accent">
-          ← {chapter.story.title}
+
+      {/* Breadcrumb */}
+      <nav className="mb-12 font-sans text-xs text-ink-muted dark:text-ink-dark-dim">
+        <Link
+          href={`/truyen/${chapter.story.slug}`}
+          className="inline-flex items-center gap-1.5 hover:text-accent dark:hover:text-accent-soft"
+        >
+          <ArrowLeftIcon className="h-3.5 w-3.5" />
+          {chapter.story.title}
         </Link>
       </nav>
-      <header className="mb-6 space-y-1 border-b border-border pb-4">
-        <p className="text-sm text-ink-muted">Chương {chapter.number}</p>
-        <h1 className="font-serif text-3xl">{chapter.title}</h1>
+
+      {/* Header */}
+      <header className="mb-12 space-y-3">
+        <p className="smallcaps text-accent">Chương {chapter.number}</p>
+        <h1 className="font-serif text-display-lg text-balance">
+          {chapter.title}
+        </h1>
       </header>
+
+      {/* Body */}
       {isMetaOnly || !chapter.content ? (
-        <div className="rounded border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
-          <p className="mb-2 font-medium">Chương chỉ có metadata.</p>
-          {chapter.sourceUrl ? (
+        <section className="rounded-sm border border-accent/30 bg-accent/5 p-6 font-body dark:border-accent-soft/30 dark:bg-accent/10">
+          <p className="font-serif text-xl">Chương chỉ có metadata.</p>
+          <p className="mt-2 text-ink-dim dark:text-ink-dark-dim">
+            Trạm Truyện không lưu nội dung tác phẩm này. Bạn có thể đọc tại
+            nguồn gốc.
+          </p>
+          {chapter.sourceUrl && (
             <a
               href={chapter.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent underline"
+              className="mt-4 inline-flex items-center gap-2 font-sans text-sm text-accent underline-offset-4 hover:underline dark:text-accent-soft"
             >
-              Đọc tại nguồn gốc →
+              Đọc tại nguồn gốc
+              <ArrowRightIcon className="h-4 w-4" />
             </a>
+          )}
+        </section>
+      ) : (
+        <section className="prose-reader font-body text-reader text-ink dark:text-ink-dark">
+          {chapter.content
+            .split(/\n\s*\n/)
+            .map((p, i) => p.trim())
+            .filter(Boolean)
+            .map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+        </section>
+      )}
+
+      {/* Ornament */}
+      <div className="my-16 flex items-center justify-center text-accent/40 dark:text-accent-soft/40">
+        <span className="font-serif text-2xl tracking-[1em] -mr-[1em]">
+          ❦
+        </span>
+      </div>
+
+      {/* Footer nav */}
+      <nav className="hairline-t grid grid-cols-3 items-center gap-2 pt-6 font-sans text-sm">
+        <div className="justify-self-start">
+          {prev ? (
+            <Link
+              href={`/truyen/${chapter.story.slug}/${prev.slug}`}
+              className="group inline-flex items-center gap-2 text-ink-dim hover:text-accent dark:text-ink-dark-dim dark:hover:text-accent-soft"
+            >
+              <ArrowLeftIcon className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5" />
+              <span className="hidden sm:inline">Chương {prev.number}</span>
+              <span className="sm:hidden">Trước</span>
+            </Link>
           ) : (
-            <p>Không có liên kết nguồn.</p>
+            <span />
           )}
         </div>
-      ) : (
-        <article className="font-reader whitespace-pre-line text-base leading-reader">
-          {chapter.content}
-        </article>
-      )}
-      <nav className="mt-10 flex items-center justify-between gap-3 border-t border-border pt-4 text-sm">
-        {prev ? (
-          <Link
-            href={`/truyen/${chapter.story.slug}/${prev.slug}`}
-            className="rounded border border-border px-3 py-2 hover:border-accent"
-          >
-            ← Ch.{prev.number}
-          </Link>
-        ) : (
-          <span />
-        )}
         <Link
           href={`/truyen/${chapter.story.slug}`}
-          className="text-ink-muted hover:text-accent"
+          className="inline-flex items-center justify-center gap-2 justify-self-center text-ink-muted hover:text-accent dark:text-ink-dark-dim dark:hover:text-accent-soft"
         >
-          Mục lục
+          <BookIcon className="h-4 w-4" />
+          <span className="hidden sm:inline">Mục lục</span>
         </Link>
-        {next ? (
-          <Link
-            href={`/truyen/${chapter.story.slug}/${next.slug}`}
-            className="rounded border border-border px-3 py-2 hover:border-accent"
-          >
-            Ch.{next.number} →
-          </Link>
-        ) : (
-          <span />
-        )}
+        <div className="justify-self-end">
+          {next ? (
+            <Link
+              href={`/truyen/${chapter.story.slug}/${next.slug}`}
+              className="group inline-flex items-center gap-2 text-ink-dim hover:text-accent dark:text-ink-dark-dim dark:hover:text-accent-soft"
+            >
+              <span className="hidden sm:inline">Chương {next.number}</span>
+              <span className="sm:hidden">Sau</span>
+              <ArrowRightIcon className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+            </Link>
+          ) : (
+            <span />
+          )}
+        </div>
       </nav>
-    </main>
+    </article>
   );
 }
