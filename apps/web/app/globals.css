@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --bg: #faf8f3;
+  --fg: #1f1b16;
+  --muted: #6b6359;
+  --accent: #a0522d;
+  --border: #e5ded1;
+}
+
+.dark {
+  color-scheme: dark;
+  --bg: #15120e;
+  --fg: #e9e2d6;
+  --muted: #a39788;
+  --accent: #d9a87a;
+  --border: #2a241d;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-reader {
+  font-family: "Lora", "Source Serif Pro", Georgia, serif;
+  line-height: 1.75;
+}

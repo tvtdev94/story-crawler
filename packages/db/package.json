@@ -1,0 +1,41 @@
+{
+  "name": "@tram-tuyen/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts"
+  },
+  "scripts": {
+    "generate": "dotenv -e ../../.env -- prisma generate",
+    "migrate": "dotenv -e ../../.env -- prisma migrate dev",
+    "migrate:deploy": "dotenv -e ../../.env -- prisma migrate deploy",
+    "reset": "dotenv -e ../../.env -- prisma migrate reset --force",
+    "seed": "dotenv -e ../../.env -- tsx src/seed.ts",
+    "studio": "dotenv -e ../../.env -- prisma studio",
+    "lint": "echo \"(db) lint placeholder\"",
+    "typecheck": "tsc --noEmit",
+    "build": "echo \"(db) typed via consumer\"",
+    "test": "vitest run --passWithNoTests"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma",
+    "seed": "tsx src/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.1.0",
+    "@tram-tuyen/core": "workspace:*",
+    "bcryptjs": "^2.4.3"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "dotenv-cli": "^8.0.0",
+    "prisma": "^6.1.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

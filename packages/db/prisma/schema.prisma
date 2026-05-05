@@ -1,0 +1,191 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum StoryStatus {
+  ONGOING
+  COMPLETED
+  HIATUS
+}
+
+enum LicenseStatus {
+  OWNED
+  LICENSED
+  PUBLIC_DOMAIN
+  METADATA_ONLY
+  UNAUTHORIZED
+}
+
+enum PublishStatus {
+  DRAFT
+  PENDING_REVIEW
+  SCHEDULED
+  PUBLISHED
+  FAILED
+}
+
+enum LicenseMode {
+  FULL
+  METADATA_ONLY
+  MOCK
+}
+
+enum JobStatus {
+  QUEUED
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
+enum PublishLogStatus {
+  SUCCESS
+  FAILED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(EDITOR)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Author {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  bio       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  stories   Story[]
+
+  @@index([name])
+}
+
+model Genre {
+  id        String        @id @default(cuid())
+  name      String
+  slug      String        @unique
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  stories   StoryGenre[]
+}
+
+model Story {
+  id            String         @id @default(cuid())
+  title         String
+  slug          String         @unique
+  authorId      String?
+  description   String?
+  coverUrl      String?
+  storyStatus   StoryStatus    @default(ONGOING)
+  licenseStatus LicenseStatus  @default(METADATA_ONLY)
+  sourceUrl     String?
+  sourceId      String?
+  externalId    String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  author        Author?        @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  source        Source?        @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+  genres        StoryGenre[]
+  chapters      Chapter[]
+
+  @@index([licenseStatus])
+  @@index([storyStatus])
+  @@index([updatedAt])
+  @@unique([sourceId, externalId])
+}
+
+model StoryGenre {
+  storyId String
+  genreId String
+  story   Story @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  genre   Genre @relation(fields: [genreId], references: [id], onDelete: Cascade)
+
+  @@id([storyId, genreId])
+  @@index([genreId])
+}
+
+model Chapter {
+  id            String        @id @default(cuid())
+  storyId       String
+  number        Int
+  title         String
+  slug          String
+  content       String?
+  contentHash   String?
+  sourceUrl     String?
+  externalId    String?
+  publishStatus PublishStatus @default(PENDING_REVIEW)
+  scheduledAt   DateTime?
+  publishedAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  story         Story         @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@unique([storyId, number])
+  @@unique([storyId, contentHash])
+  @@index([publishStatus])
+  @@index([scheduledAt])
+  @@index([publishedAt])
+  @@index([storyId, publishStatus])
+}
+
+model Source {
+  id          String      @id @default(cuid())
+  name        String
+  baseUrl     String
+  adapterKey  String      @unique
+  licenseMode LicenseMode @default(METADATA_ONLY)
+  enabled     Boolean     @default(true)
+  rateLimitMs Int         @default(1000)
+  lastRunAt   DateTime?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  stories     Story[]
+  crawlJobs   CrawlJob[]
+}
+
+model CrawlJob {
+  id            String     @id @default(cuid())
+  sourceId      String
+  status        JobStatus  @default(QUEUED)
+  startedAt     DateTime   @default(now())
+  finishedAt    DateTime?
+  itemsFound    Int        @default(0)
+  itemsNew      Int        @default(0)
+  errorMessage  String?
+  triggeredBy   String?
+
+  source        Source     @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+
+  @@index([sourceId])
+  @@index([status])
+  @@index([startedAt(sort: Desc)])
+}
+
+model PublishLog {
+  id          String           @id @default(cuid())
+  chapterId   String
+  status      PublishLogStatus
+  message     String?
+  attemptedAt DateTime         @default(now())
+
+  @@index([chapterId])
+  @@index([status])
+  @@index([attemptedAt(sort: Desc)])
+}

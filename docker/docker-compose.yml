@@ -1,0 +1,39 @@
+name: tram-tuyen
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: tram-tuyen-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: tramtuyen
+      POSTGRES_PASSWORD: tramtuyen
+      POSTGRES_DB: tramtuyen
+    ports:
+      - "5432:5432"
+    volumes:
+      - tram-tuyen-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tramtuyen -d tramtuyen"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: tram-tuyen-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - tram-tuyen-redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  tram-tuyen-postgres:
+  tram-tuyen-redis:

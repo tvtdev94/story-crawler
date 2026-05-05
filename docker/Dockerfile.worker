@@ -1,0 +1,25 @@
+# syntax=docker/dockerfile:1.7
+ARG NODE_VERSION=20-alpine
+
+FROM node:${NODE_VERSION} AS base
+RUN corepack enable && corepack prepare pnpm@10.26.0 --activate
+WORKDIR /app
+
+FROM base AS deps
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml* tsconfig.base.json ./
+COPY apps/worker/package.json apps/worker/
+COPY packages/db/package.json packages/db/
+COPY packages/core/package.json packages/core/
+RUN pnpm install --frozen-lockfile=false
+
+FROM deps AS build
+COPY . .
+RUN pnpm --filter @tram-tuyen/db generate
+RUN pnpm --filter @tram-tuyen/worker build
+
+FROM node:${NODE_VERSION} AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+RUN corepack enable && corepack prepare pnpm@10.26.0 --activate
+COPY --from=build /app /app
+CMD ["pnpm", "--filter", "@tram-tuyen/worker", "start"]
