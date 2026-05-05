@@ -17,6 +17,9 @@
     "build": "echo \"(core) typed via consumer\"",
     "test": "vitest run --passWithNoTests"
   },
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
   "devDependencies": {
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
