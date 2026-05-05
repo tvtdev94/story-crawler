@@ -62,11 +62,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       session.user.role = (t.role as Role) ?? "EDITOR";
       return session;
     },
-    authorized: ({ auth: session, request }) => {
-      const { pathname } = request.nextUrl;
-      if (pathname.startsWith("/admin/login")) return true;
-      if (pathname.startsWith("/admin")) return Boolean(session?.user);
-      return true;
-    },
   },
 });

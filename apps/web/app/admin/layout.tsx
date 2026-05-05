@@ -1,9 +1,6 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
-
-const ADMIN_ONLY = new Set(["/admin/users", "/admin/sources"]);
 
 const NAV = [
   { href: "/admin", label: "Tổng quan" },
@@ -23,8 +20,15 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  // /admin/login child branches off — middleware ensures session here.
-  if (!session?.user) redirect("/admin/login");
+  // Middleware already gated /admin/* (except /admin/login).
+  // For login page session may be null — render a thin shell without nav.
+  if (!session?.user) {
+    return (
+      <div className="min-h-screen bg-paper text-ink dark:bg-paper-dark dark:text-ink-dark">
+        {children}
+      </div>
+    );
+  }
 
   const isAdmin = session.user.role === "ADMIN";
 
