@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.2.0 — 2026-05-06 — Two-phase crawl
+
+### Changed
+- Single-pass crawl split into **discover** and **fetch** queues.
+  - `crawl-discover` (concurrency 1): adapter discoverStories + fetchChapters → upsert Story + bulk insert `DiscoveredItem` stubs (no content).
+  - `crawl-fetch` (concurrency 2, attempts 3 expo): per-item fetch with **license chokepoint preserved** in `services/fetch-item.ts`.
+- Renamed: `services/save-crawled.ts` → `save-discovered.ts`; `queues/crawl-queue.ts` → `crawl-discover-queue.ts`; `lib/queues/crawl-enqueue.ts` → `discover-enqueue.ts`; `jobs/crawl-job.ts` → `discover-job.ts`.
+
+### Added
+- Prisma: enum `DiscoveredStatus`, model `DiscoveredItem` (UNIQUE `sourceId+externalId`), `Source.refreshIntervalHours`.
+- Admin `/admin/discovered` inbox with 5 tabs (DISCOVERED/QUEUED/FETCHED/SKIPPED/FAILED) + bulk actions (Fetch/Skip/Restore/Retry, max 200/op).
+- Source form: "Tự động làm mới" select (Off/1h/3h/6h/12h/24h/168h).
+- `discover-cron` worker: `syncRepeatables()` polls `Source` every 5 min and registers/removes BullMQ repeatable `discover:{sourceId}`.
+- Sources list: per-source inbox counts column (D/F/S) linking to filtered inbox.
+- Sidebar: "Inbox" link.
+- Tests: `save-discovered.test.ts` (insert + idempotent), `fetch-item.test.ts` (FULL/MOCK/METADATA_ONLY/idempotency guard).
+
+### Notes
+- Migration `20260506062005_two_phase_discover_fetch` adds new table/enum/column without touching existing data.
+- Old MVP flow (single-pass content fetch) is retired; backward-compat for existing `Chapter PENDING_REVIEW` rows preserved.
+
 ## 0.1.0 — 2026-05-05 — MVP
 
 ### Added

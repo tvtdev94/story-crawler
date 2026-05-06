@@ -9,7 +9,18 @@ export type SourceFormInitial = {
   licenseMode?: "FULL" | "METADATA_ONLY" | "MOCK";
   enabled?: boolean;
   rateLimitMs?: number;
+  refreshIntervalHours?: number | null;
 };
+
+const REFRESH_OPTIONS: { value: string; label: string }[] = [
+  { value: "0", label: "Tắt (chạy thủ công)" },
+  { value: "1", label: "Mỗi 1 giờ" },
+  { value: "3", label: "Mỗi 3 giờ" },
+  { value: "6", label: "Mỗi 6 giờ" },
+  { value: "12", label: "Mỗi 12 giờ" },
+  { value: "24", label: "Mỗi ngày" },
+  { value: "168", label: "Mỗi tuần" },
+];
 
 export function SourceForm({
   action,
@@ -82,15 +93,30 @@ export function SourceForm({
             defaultValue={initial?.rateLimitMs ?? 1000}
           />
         </div>
-        <label className="mt-7 flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            name="enabled"
-            defaultChecked={initial?.enabled ?? true}
-          />
-          Cho phép chạy crawl
-        </label>
+        <div className="space-y-2">
+          <Label htmlFor="refreshIntervalHours">Tự động làm mới</Label>
+          <select
+            id="refreshIntervalHours"
+            name="refreshIntervalHours"
+            defaultValue={String(initial?.refreshIntervalHours ?? 0)}
+            className="h-10 w-full rounded-md border border-border bg-transparent px-3 text-sm"
+          >
+            {REFRESH_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
+      <label className="flex items-center gap-2 text-sm">
+        <input
+          type="checkbox"
+          name="enabled"
+          defaultChecked={initial?.enabled ?? true}
+        />
+        Cho phép chạy crawl
+      </label>
       <Button type="submit">Lưu</Button>
     </form>
   );

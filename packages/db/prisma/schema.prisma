@@ -52,6 +52,14 @@ enum PublishLogStatus {
   FAILED
 }
 
+enum DiscoveredStatus {
+  DISCOVERED
+  QUEUED
+  FETCHED
+  SKIPPED
+  FAILED
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
@@ -101,6 +109,7 @@ model Story {
   source        Source?        @relation(fields: [sourceId], references: [id], onDelete: SetNull)
   genres        StoryGenre[]
   chapters      Chapter[]
+  discoveredItems DiscoveredItem[]
 
   @@index([licenseStatus])
   @@index([storyStatus])
@@ -152,12 +161,14 @@ model Source {
   licenseMode LicenseMode @default(METADATA_ONLY)
   enabled     Boolean     @default(true)
   rateLimitMs Int         @default(1000)
+  refreshIntervalHours Int?
   lastRunAt   DateTime?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
   stories     Story[]
   crawlJobs   CrawlJob[]
+  discoveredItems DiscoveredItem[]
 }
 
 model CrawlJob {
@@ -188,4 +199,29 @@ model PublishLog {
   @@index([chapterId])
   @@index([status])
   @@index([attemptedAt(sort: Desc)])
+}
+
+model DiscoveredItem {
+  id            String           @id @default(cuid())
+  sourceId      String
+  storyId       String
+  externalId    String
+  number        Int
+  title         String
+  sourceUrl     String?
+  status        DiscoveredStatus @default(DISCOVERED)
+  errorMessage  String?
+  attempts      Int              @default(0)
+  discoveredAt  DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  fetchedAt     DateTime?
+  chapterId     String?
+
+  source        Source           @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  story         Story            @relation(fields: [storyId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceId, externalId])
+  @@index([status, discoveredAt])
+  @@index([sourceId, status])
+  @@index([storyId])
 }

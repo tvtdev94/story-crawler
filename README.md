@@ -45,5 +45,8 @@ docker           compose, Dockerfiles
 
 ## Status
 
-MVP shipped — 8 phases hoàn thành. UI v2 (editorial redesign) đang sống.
-Plan gốc: `plans/260505-2111-tram-tuyen-mvp/`.
+MVP shipped — 9 phases hoàn thành. UI v2 (editorial redesign) đang sống.
+
+Crawl flow giờ là **2-phase**: discover stubs → editor approve tại `/admin/discovered` → fetch nội dung. Mỗi nguồn có `refreshIntervalHours` cho lịch tự động.
+
+Plans: `plans/260505-2111-tram-tuyen-mvp/`, `plans/260506-0604-two-phase-discover-fetch/`.

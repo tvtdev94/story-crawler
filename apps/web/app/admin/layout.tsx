@@ -7,6 +7,7 @@ const NAV = [
   { href: "/admin/stories", label: "Truyện" },
   { href: "/admin/chapters", label: "Chương" },
   { href: "/admin/review", label: "Chờ duyệt" },
+  { href: "/admin/discovered", label: "Inbox" },
   { href: "/admin/authors", label: "Tác giả" },
   { href: "/admin/genres", label: "Thể loại" },
   { href: "/admin/sources", label: "Nguồn", adminOnly: true },

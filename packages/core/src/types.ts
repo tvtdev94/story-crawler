@@ -51,6 +51,16 @@ export const PublishLogStatus = {
 export type PublishLogStatus =
   (typeof PublishLogStatus)[keyof typeof PublishLogStatus];
 
+export const DiscoveredStatus = {
+  DISCOVERED: "DISCOVERED",
+  QUEUED: "QUEUED",
+  FETCHED: "FETCHED",
+  SKIPPED: "SKIPPED",
+  FAILED: "FAILED",
+} as const;
+export type DiscoveredStatus =
+  (typeof DiscoveredStatus)[keyof typeof DiscoveredStatus];
+
 export const RESERVED_SLUGS = new Set<string>([
   "admin",
   "api",

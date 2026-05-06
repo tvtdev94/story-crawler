@@ -5,9 +5,14 @@ import { redirect } from "next/navigation";
 import { prisma } from "@story-crawler/db";
 import { SourceInput } from "@story-crawler/core";
 import { requireRole, requireSession } from "@/lib/auth/require-role";
-import { enqueueCrawl } from "@/lib/queues/crawl-enqueue";
+import { enqueueDiscover } from "@/lib/queues/discover-enqueue";
 
 function parseSourceForm(formData: FormData) {
+  const refreshRaw = formData.get("refreshIntervalHours");
+  const refreshIntervalHours =
+    refreshRaw === null || refreshRaw === "" || refreshRaw === "0"
+      ? null
+      : refreshRaw;
   return SourceInput.parse({
     name: formData.get("name"),
     baseUrl: formData.get("baseUrl"),
@@ -15,6 +20,7 @@ function parseSourceForm(formData: FormData) {
     licenseMode: formData.get("licenseMode"),
     enabled: formData.get("enabled") === "on" || formData.get("enabled") === "true",
     rateLimitMs: formData.get("rateLimitMs"),
+    refreshIntervalHours,
   });
 }
 
@@ -45,7 +51,7 @@ export async function runSource(id: string) {
   const source = await prisma.source.findUnique({ where: { id } });
   if (!source) throw new Error("Source không tồn tại");
   if (!source.enabled) throw new Error("Source đang bị tắt");
-  await enqueueCrawl(id, session.user.email ?? session.user.id);
+  await enqueueDiscover(id, session.user.email ?? session.user.id);
   revalidatePath("/admin/sources");
   revalidatePath("/admin/crawl-jobs");
 }

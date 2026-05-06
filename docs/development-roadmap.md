@@ -10,6 +10,7 @@
 - [x] Phase 06 — Review queue + schedule + publisher worker (60s tick)
 - [x] Phase 07 — Dashboard stats + crawl-jobs/publish-logs UI
 - [x] Phase 08 — Seed + license-guard tests + docs
+- [x] Phase 09 — Two-phase crawl (discover → approve → fetch) + per-source cron (2026-05-06)
 
 ## Phase 2 (post-MVP)
 

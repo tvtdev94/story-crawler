@@ -17,5 +17,12 @@ export const SourceInput = z.object({
   ]),
   enabled: z.boolean().default(true),
   rateLimitMs: z.coerce.number().int().min(0).max(60_000).default(1000),
+  refreshIntervalHours: z.coerce
+    .number()
+    .int()
+    .min(1)
+    .max(720)
+    .nullable()
+    .optional(),
 });
 export type SourceInput = z.infer<typeof SourceInput>;

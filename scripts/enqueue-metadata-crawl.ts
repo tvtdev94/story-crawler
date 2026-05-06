@@ -18,19 +18,19 @@ async function main() {
     process.env.REDIS_URL ?? "redis://localhost:6379",
     { maxRetriesPerRequest: null },
   );
-  const q = new Queue("crawl", { connection: conn });
+  const q = new Queue("crawl-discover", { connection: conn });
   // Re-run mock-fixture to test idempotency + run metadata-only.
   const mock = await prisma.source.findUnique({
     where: { adapterKey: "mock-fixture" },
   });
   if (mock) {
-    const j1 = await q.add("crawl", {
+    const j1 = await q.add("discover", {
       sourceId: mock.id,
       triggeredBy: "rerun-mock",
     });
     console.log("rerun mock:", j1.id);
   }
-  const j2 = await q.add("crawl", {
+  const j2 = await q.add("discover", {
     sourceId: meta.id,
     triggeredBy: "metadata",
   });

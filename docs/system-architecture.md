@@ -22,7 +22,9 @@
                                    ▼               ▼
                               ┌────────────────────────────┐
                               │  apps/worker               │
-                              │  - crawl queue handler     │
+                              │  - discover-job (crawl-discover queue) │
+                              │  - fetch-job (crawl-fetch queue)       │
+                              │  - discover-cron (5-min poll)          │
                               │  - publish tick (60s)      │
                               │  - 3 adapters              │
                               └────────────────────────────┘
@@ -37,30 +39,54 @@
 | `apps/web` | Next.js (public + admin + API routes) | core, db |
 | `apps/worker` | BullMQ workers (crawl + publish) | core, db, bullmq |
 
-Adapters in `apps/worker/src/crawlers/*` MUST NOT import `@story-crawler/db` directly. All DB writes from crawl pass through `services/save-crawled.ts` (the **license chokepoint**).
+Adapters in `apps/worker/src/crawlers/*` MUST NOT import `@story-crawler/db` directly. Content writes flow through `services/fetch-item.ts` (the **license chokepoint**); discovery (Story upsert + DiscoveredItem stubs) flows through `services/save-discovered.ts` (no content).
 
-## Data Flow: Crawl → Publish
+## Data Flow: Discover → Approve → Fetch → Publish
 
 ```
-Admin "Run" ──▶ enqueueCrawl(sourceId)        [apps/web/lib/queues]
-                ──▶ Redis "crawl" queue
-                ──▶ apps/worker crawlJob handler
-                ──▶ adapterRegistry.get(adapterKey)
-                ──▶ adapter.discoverStories() → fetchChapters() → fetchChapterContent?
-                ──▶ saveCrawled(source, adapter)        ★ chokepoint
-                    ├─ applyLicensePolicy(licenseMode, payload)
-                    ├─ dedupe (storyId,number) + (storyId,contentHash)
-                    └─ INSERT Chapter publishStatus=PENDING_REVIEW
-                ──▶ CrawlJob row updated (SUCCESS/FAILED + counts)
+Admin "Refresh" ──▶ enqueueDiscover(sourceId)     [apps/web/lib/queues]
+                  ──▶ Redis "crawl-discover" queue
+                  ──▶ apps/worker discover-job
+                  ──▶ adapter.discoverStories() + fetchChapters()
+                  ──▶ saveDiscovered(source, adapter)
+                      ├─ Story upsert (no content)
+                      └─ DiscoveredItem.createMany(skipDuplicates) ── UNIQUE(sourceId,externalId)
+                  ──▶ CrawlJob row updated
 
-Editor approve (bulk) ──▶ Chapter publishStatus=DRAFT
-Editor schedule       ──▶ Chapter publishStatus=SCHEDULED + scheduledAt
-Publisher tick (60s)  ──▶ pick SCHEDULED && scheduledAt<=now()
-                      ──▶ Chapter publishStatus=PUBLISHED + publishedAt
-                      ──▶ PublishLog SUCCESS
-                      ──▶ POST /api/internal/revalidate (token-gated)
-                      ──▶ revalidateTag(story:slug) → public ISR refresh
+Editor @ /admin/discovered ──▶ bulk Fetch (max 200)
+                          ──▶ updateMany DISCOVERED → QUEUED
+                          ──▶ enqueueFetch(itemIds[])
+                          ──▶ Redis "crawl-fetch" queue (concurrency 2, attempts 3 expo)
+                          ──▶ apps/worker fetch-job
+                          ──▶ fetchItem(id)        ★ license chokepoint
+                              ├─ guard status=QUEUED (idempotent)
+                              ├─ skip adapter call if METADATA_ONLY
+                              ├─ applyLicensePolicy(licenseMode, payload)
+                              ├─ dedupe (storyId,contentHash)
+                              ├─ INSERT Chapter PENDING_REVIEW
+                              └─ UPDATE DiscoveredItem FETCHED + chapterId
+
+Cron (per Source.refreshIntervalHours) ──▶ syncRepeatables() polls every 5 min,
+                                       registers BullMQ repeatable discover:{sourceId}.
+
+Editor approve (bulk) @ /admin/review ──▶ Chapter publishStatus=DRAFT
+Editor schedule                       ──▶ Chapter publishStatus=SCHEDULED + scheduledAt
+Publisher tick (60s)                  ──▶ pick SCHEDULED && scheduledAt<=now()
+                                      ──▶ Chapter publishStatus=PUBLISHED + publishedAt
+                                      ──▶ PublishLog SUCCESS
+                                      ──▶ POST /api/internal/revalidate (token-gated)
+                                      ──▶ revalidateTag(story:slug) → public ISR refresh
 ```
+
+## Tables Touched by Crawl
+
+| Table | Owner | Note |
+|---|---|---|
+| `Source` | admin form | adds `refreshIntervalHours` for cron |
+| `Story` | discover-job | upsert metadata (no content) |
+| `DiscoveredItem` | discover-job + fetch-job | per-chapter stub + state machine |
+| `Chapter` | fetch-job | content + license-policed |
+| `CrawlJob` | discover-job | run audit |
 
 ## Auth & RBAC
 

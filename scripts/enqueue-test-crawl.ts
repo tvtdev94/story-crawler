@@ -20,8 +20,8 @@ async function main() {
     process.env.REDIS_URL ?? "redis://localhost:6379",
     { maxRetriesPerRequest: null },
   );
-  const q = new Queue("crawl", { connection: conn });
-  const job = await q.add("crawl", {
+  const q = new Queue("crawl-discover", { connection: conn });
+  const job = await q.add("discover", {
     sourceId: src.id,
     triggeredBy: "test-script",
   });
